@@ -4,11 +4,12 @@ import type { ReactNode } from "react";
 
 type DraggableProps = {
   children: ReactNode;
+  id: string;
 };
 
-export default function Draggable({ children }: DraggableProps) {
+export default function Draggable({ children, id }: DraggableProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: "draggable",
+    id,
   });
 
   return (
