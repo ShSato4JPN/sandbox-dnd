@@ -1,3 +1,4 @@
+import DraggableMenuItem from "./components/draggable-menu-item";
 import DndProvider from "./provider/dnd";
 import { createMenu } from "./util/create-menu";
 
@@ -6,16 +7,11 @@ function DraggableMenu() {
 
   return (
     <div>
-      <ul className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         {menus.map((menu) => (
-          <li
-            className="border-1 rounded-lg p-2 cursor-pointer hover:border-red-500"
-            key={menu.id}
-          >
-            {menu.label}
-          </li>
+          <DraggableMenuItem {...menu} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
