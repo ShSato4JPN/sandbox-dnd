@@ -1,4 +1,10 @@
-import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -32,9 +38,20 @@ const items = [
 
 export default function App() {
   const [chips, setChips] = useState<{ id: string; value: string }[]>(items);
+  const [selectedChip, setSelectedChip] = useState<string | null>(null);
+
+  const sensors = useSensors({
+    sensor: PointerSensor,
+    options: {
+      activationConstraint: {
+        distance: 8, // 8px動かしたらドラッグ開始
+      },
+    },
+  });
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={(event) => {
         const { active, over } = event;
@@ -54,7 +71,12 @@ export default function App() {
             strategy={verticalListSortingStrategy}
           >
             {chips.map((chip) => (
-              <SortableItem key={chip.id} id={chip.id}>
+              <SortableItem
+                key={chip.id}
+                id={chip.id}
+                isSelected={selectedChip === chip.id}
+                handleClick={() => setSelectedChip(chip.id)}
+              >
                 <span>item-{chip.id}</span>
               </SortableItem>
             ))}
