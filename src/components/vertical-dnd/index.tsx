@@ -13,32 +13,46 @@ import {
 import { useState } from "react";
 import SortableItem from "./SortableItem";
 
-const items = [
+type Item = {
+  id: string;
+  value: string;
+  description: string;
+};
+
+const items: Item[] = [
   {
     id: "item-1",
     value: "value1",
+    description: "description-1",
   },
   {
     id: "item-2",
     value: "value2",
+    description: "description-2",
   },
   {
     id: "item-3",
     value: "value3",
+    description: "description-3",
   },
   {
     id: "item-4",
     value: "value4",
+    description: "description-4",
   },
   {
     id: "item-5",
     value: "value5",
+    description: "description-5",
   },
 ];
 
 export default function Root() {
-  const [chips, setChips] = useState<{ id: string; value: string }[]>(items);
+  const [chips, setChips] = useState<Item[]>(items);
   const [selectedChip, setSelectedChip] = useState<string | null>(null);
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    null
+  );
 
   const sensors = useSensors({
     sensor: PointerSensor,
@@ -64,33 +78,41 @@ export default function Root() {
         setChips(newChips);
       }}
     >
-      <div className="flex flex-row gap-10">
-        <div className="flex flex-col gap-2">
-          <SortableContext
-            items={chips.map((v) => v.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {chips.map((chip) => (
-              <SortableItem
-                key={chip.id}
-                id={chip.id}
-                isSelected={selectedChip === chip.id}
-                handleClick={() => setSelectedChip(chip.id)}
-              >
-                <span>item-{chip.id}</span>
-              </SortableItem>
-            ))}
-          </SortableContext>
-        </div>
+      <div className="flex flex-col gap-4">
+        {selectedDescription !== null && (
+          <div>
+            <h1>{selectedDescription}</h1>
+          </div>
+        )}
         <div className="flex flex-row gap-10">
-          {chips.map((v) => (
-            <div
-              key={v.id}
-              className="grid place-items-center p-4 border-dashed border rounded-lg"
+          <div className="flex flex-col gap-2">
+            <SortableContext
+              items={chips.map((v) => v.id)}
+              strategy={verticalListSortingStrategy}
             >
-              {v.value}
-            </div>
-          ))}
+              {chips.map((chip) => (
+                <SortableItem
+                  key={chip.id}
+                  id={chip.id}
+                  isSelected={selectedChip === chip.id}
+                  handleClick={() => setSelectedChip(chip.id)}
+                >
+                  <span>item-{chip.id}</span>
+                </SortableItem>
+              ))}
+            </SortableContext>
+          </div>
+          <div className="flex flex-row gap-10">
+            {chips.map((v) => (
+              <div
+                key={v.id}
+                className="grid place-items-center p-4 border-dashed border rounded-lg"
+                onClick={() => setSelectedDescription(v.description)}
+              >
+                {v.value}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <DragOverlay>
