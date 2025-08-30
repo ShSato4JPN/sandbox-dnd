@@ -10,6 +10,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import SortableItem from "./SortableItem";
 
@@ -102,17 +103,30 @@ export default function Root() {
               ))}
             </SortableContext>
           </div>
-          <div className="flex flex-row gap-10">
+          <motion.div 
+            className="flex flex-row gap-10"
+            layout
+          >
             {chips.map((v) => (
-              <div
+              <motion.div
                 key={v.id}
-                className="grid place-items-center p-4 border-dashed border rounded-lg"
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ 
+                  layout: { 
+                    duration: 0.3,
+                    ease: "easeInOut"
+                  },
+                  opacity: { duration: 0.2 }
+                }}
+                className="grid place-items-center p-4 border-dashed border rounded-lg cursor-pointer"
                 onClick={() => setSelectedDescription(v.description)}
               >
                 {v.value}
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
       <DragOverlay>
