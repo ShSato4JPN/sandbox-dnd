@@ -98,27 +98,29 @@ export default function Root() {
                   isSelected={selectedChip === chip.id}
                   handleClick={() => setSelectedChip(chip.id)}
                 >
-                  <span>item-{chip.id}</span>
+                  <button
+                    className="border-orange-200"
+                    onClick={() => alert("test")}
+                  >
+                    <span>item-{chip.id}</span>
+                  </button>
                 </SortableItem>
               ))}
             </SortableContext>
           </div>
-          <motion.div 
-            className="flex flex-row gap-10"
-            layout
-          >
+          <motion.div className="flex flex-row gap-10" layout>
             {chips.map((v) => (
               <motion.div
                 key={v.id}
                 layout
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ 
-                  layout: { 
+                transition={{
+                  layout: {
                     duration: 0.3,
-                    ease: "easeInOut"
+                    ease: "easeInOut",
                   },
-                  opacity: { duration: 0.2 }
+                  opacity: { duration: 0.2 },
                 }}
                 className="grid place-items-center p-4 border-dashed border rounded-lg cursor-pointer"
                 onClick={() => setSelectedDescription(v.description)}
